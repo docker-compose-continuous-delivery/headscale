@@ -21,6 +21,11 @@ services:
       - "traefik.http.routers.headscale.tls=true"
       - "traefik.http.routers.headscale.tls.certresolver=cloudflare"
       - "traefik.http.services.headscale.loadbalancer.server.port=8080"
+    healthcheck:
+      test: [ "CMD", "headscale", "nodes", "list" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   headscale-webui:
     image: ghcr.io/ifargle/headscale-webui:latest
@@ -43,6 +48,14 @@ services:
       - "traefik.http.routers.headscale-webui.tls=true"
       - "traefik.http.routers.headscale-webui.tls.certresolver=cloudflare"
       - "traefik.http.services.headscale-webui.loadbalancer.server.port=5000"
+    depends_on:
+      headscale:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:5000" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 
 networks:
