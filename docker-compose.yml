@@ -3,7 +3,7 @@ version: "3.9"
 services:
 
   headscale:
-    image: headscale/headscale:0.21
+    image: headscale/headscale:0.22.3
     container_name: headscale
     restart: unless-stopped
     entrypoint: headscale serve
