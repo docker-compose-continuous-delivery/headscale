@@ -21,6 +21,8 @@ services:
       - "traefik.http.routers.headscale.tls=true"
       - "traefik.http.routers.headscale.tls.certresolver=cloudflare"
       - "traefik.http.services.headscale.loadbalancer.server.port=8080"
+        
+      - "com.centurylinklabs.watchtower.enable=true"
     healthcheck:
       test: [ "CMD", "headscale", "nodes", "list" ]
       interval: 30s
@@ -48,6 +50,8 @@ services:
       - "traefik.http.routers.headscale-webui.tls=true"
       - "traefik.http.routers.headscale-webui.tls.certresolver=cloudflare"
       - "traefik.http.services.headscale-webui.loadbalancer.server.port=5000"
+        
+      - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
       headscale:
         condition: service_healthy
